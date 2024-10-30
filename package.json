@@ -1,0 +1,27 @@
+{
+  "name": "mcstructure-js",
+  "version": "0.0.1",
+  "description": "A NodeJS package for .mcstructure read & write",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/HTMonkeyG/MCStructure.js.git"
+  },
+  "keywords": [
+    "mcbe",
+    "mcpe",
+    "structure",
+    "file",
+    "nbt",
+    "format"
+  ],
+  "author": "HTMonkeyG",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/HTMonkeyG/MCStructure.js/issues"
+  },
+  "homepage": "https://github.com/HTMonkeyG/MCStructure.js#readme"
+}
