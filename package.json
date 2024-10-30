@@ -23,5 +23,8 @@
   "bugs": {
     "url": "https://github.com/HTMonkeyG/MCStructure.js/issues"
   },
-  "homepage": "https://github.com/HTMonkeyG/MCStructure.js#readme"
+  "homepage": "https://github.com/HTMonkeyG/MCStructure.js#readme",
+  "dependencies": {
+    "parsenbt-js": "^2.2.1"
+  }
 }
