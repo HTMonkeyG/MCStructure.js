@@ -1,1 +1,0 @@
-const MCStructure = require("../main.js");
