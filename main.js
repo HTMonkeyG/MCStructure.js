@@ -182,6 +182,7 @@ class MCStructure {
       , z = pos.z % this.size.zL
       , index = z + this.size.zL * (y + this.size.yL * x);
 
+    this.palette.blockEntity["comp>" + index] = NBT.create();
     this.palette.blockEntity["comp>" + index]["comp>block_entity_data"] = nbt;
     nbt["i32>x"] = x - this.origin.x;
     nbt["i32>y"] = y - this.origin.y;

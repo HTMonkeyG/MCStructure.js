@@ -1,6 +1,6 @@
 {
   "name": "mcstructure-js",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A NodeJS package for .mcstructure read & write",
   "main": "main.js",
   "scripts": {
@@ -26,6 +26,6 @@
   "homepage": "https://github.com/HTMonkeyG/MCStructure.js#readme",
   "dependencies": {
     "parsenbt-js": "^2.3.0",
-    "project-mirror-registry": "^0.0.2"
+    "project-mirror-registry": "^0.0.4"
   }
 }
