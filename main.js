@@ -7,7 +7,7 @@ class MCStructure {
    * @returns {MCStructure}
    */
   static deserialize(buf) {
-    var snbt = NBT.Reader(buf, true, true)["comp>"]
+    var snbt = NBT.Reader(buf, { littleEndian: true, asProxy: true })["comp>"]
       , stru = snbt["comp>structure"]
       , result = new MCStructure(
         snbt["list>size"][1],
@@ -52,7 +52,7 @@ class MCStructure {
         map[i] = j;
         j++;
       } else
-        a.palette.block.splice(i), delete a.palette.blockEntity["comp>" + i];
+        a.palette.block.splice(i);
 
     for (var i = 0, j = a.getVolume(); i < j; i++) {
       if (a.blockIndices.extron[i] >= 0)
@@ -86,8 +86,8 @@ class MCStructure {
       z: 0
     };
     this.blockIndices = {
-      extron: new Int32Array(xL * yL * zL),
-      intron: new Int32Array(xL * yL * zL)
+      extron: new Int32Array(xL * yL * zL).fill(-1),
+      intron: new Int32Array(xL * yL * zL).fill(-1)
     };
     this.palette = {
       block: [],
@@ -143,11 +143,13 @@ class MCStructure {
 
   /**
    * Place a block.
+   * 
+   * Put given NBT data into block indices.
    * @param {Object} pos 
    * @param {Number} pos.x
    * @param {Number} pos.y
    * @param {Number} pos.z
-   * @param {*} block 
+   * @param {Object} block 
    * @returns {Boolean}
    */
   setBlock(pos, block) {
@@ -169,6 +171,8 @@ class MCStructure {
 
   /**
    * Set the block entity of a block.
+   * 
+   * Put given NBT data into block entity data array.
    * @param {Object} pos 
    * @param {Number} pos.x
    * @param {Number} pos.y
@@ -182,7 +186,7 @@ class MCStructure {
       , z = pos.z % this.size.zL
       , index = z + this.size.zL * (y + this.size.yL * x);
 
-    this.palette.blockEntity["comp>" + index] = NBT.create();
+    this.palette.blockEntity["comp>" + index] = NBT.create(true);
     this.palette.blockEntity["comp>" + index]["comp>block_entity_data"] = nbt;
     nbt["i32>x"] = x - this.origin.x;
     nbt["i32>y"] = y - this.origin.y;
@@ -213,8 +217,8 @@ class MCStructure {
     result["comp>structure"] = stru;
     stru["list>block_indices"] = [
       "list",
-      ['i32', ...this.blockIndices.extron],
-      ['i32', ...this.blockIndices.intron]
+      this.blockIndices.extron,
+      this.blockIndices.intron
     ];
     stru["list>entities"] = ["comp", ...this.entities];
     stru["comp>palette"] = NBT.create();
@@ -225,7 +229,7 @@ class MCStructure {
     ];
     stru["comp>palette"]["comp>default"]["comp>block_position_data"] = this.palette.blockEntity;
 
-    return NBT.Writer(result, true, true)
+    return NBT.Writer(result, { littleEndian: true, allowBigInt: true, allowTypedArray: true })
   }
 }
 
