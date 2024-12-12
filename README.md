@@ -40,7 +40,7 @@ st.setBlockData({x: 2, y: 2, z: 2}, be);
 ```
 
 # API Document
-See [API.md](https://github.com/HTMonkeyG/MCStructure.js/docs/API.md).
+See [API.md](https://github.com/HTMonkeyG/MCStructure.js/blob/main/docs/API.md).
 
 # Relative Repositories
 
