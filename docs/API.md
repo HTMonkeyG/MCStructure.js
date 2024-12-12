@@ -14,7 +14,7 @@
       * [mcs.setBlockData(pos, data)](#MCS+setBlockData) ⇒ [``<Boolean>``](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Boolean_type)
       * [mcs.fill(from, to, block)](#MCS+fill) ⇒ [``<Boolean>``](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Boolean_type)
       * [mcs.summon(entity, pos)](#MCS+summon) ⇒ [``<BigInt>``](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/BigInt)
-      * [mcs.kill(uniqueID)](#MCS+summon) ⇒ [``<Object>``](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object)
+      * [mcs.kill(uniqueID)](#MCS+kill) ⇒ [``<Object>``](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object)
       * [mcs.serialize()](#MCS+serialize) ⇒ [``<ArrayBuffer>``](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer)
     * _static_
       * [MCStructure.deserialize(buf)](#MCS+deserialize)
