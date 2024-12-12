@@ -1,9 +1,13 @@
 const NBT = require("parsenbt-js");
 
+function clamp(x, a, b) {
+  return x < a ? a : x > b ? b : x
+}
+
 class MCStructure {
   /**
    * Deserialize mcstructure from blob.
-   * @param {ArrayBuffer} buf 
+   * @param {ArrayBuffer} buf - Input buffer
    * @returns {MCStructure}
    */
   static deserialize(buf) {
@@ -66,9 +70,9 @@ class MCStructure {
 
   /**
    * Create a mcstructure with given size.
-   * @param {Number} xL - X side length
-   * @param {Number} yL - Y side length
-   * @param {Number} zL - Z side length
+   * @param {Number} xL - X side length.
+   * @param {Number} yL - Y side length.
+   * @param {Number} zL - Z side length.
    */
   constructor(xL, yL, zL) {
     if (xL < 0 || yL < 0 || zL < 0 || xL * yL * zL > 1073741824)
@@ -95,6 +99,9 @@ class MCStructure {
     }
     this.entities = [];
 
+    // Entity ID
+    this.uniqueID = 0n;
+
     // Specify the layer where the operation is performed.
     this.operationOnLayer = "extron";
   }
@@ -108,16 +115,17 @@ class MCStructure {
   }
 
   /**
-   * Get block.
-   * @param {Object} pos 
-   * @param {Number} pos.x
-   * @param {Number} pos.y
-   * @param {Number} pos.z
+   * Get a block in the structure.
+   * @param {Object} pos - Position in the structure.
+   * @param {Number} pos.x - Pos X.
+   * @param {Number} pos.y - Pos Y.
+   * @param {Number} pos.z - Pos Z.
+   * @returns {Object}
    */
   getBlock(pos) {
-    var x = pos.x % this.size.xL
-      , y = pos.y % this.size.yL
-      , z = pos.z % this.size.zL
+    var x = clamp(pos.x, 0, this.size.xL)
+      , y = clamp(pos.y, 0, this.size.yL)
+      , z = clamp(pos.z, 0, this.size.zL)
       , index = z + this.size.zL * (y + this.size.yL * x)
       , block = this.blockIndices[this.operationOnLayer][index];
 
@@ -126,36 +134,46 @@ class MCStructure {
 
   /**
    * Get block entity.
-   * @param {Object} pos 
-   * @param {Number} pos.x
-   * @param {Number} pos.y
-   * @param {Number} pos.z
-   * @returns 
+   * @param {Object} pos - Position in the structure.
+   * @param {Number} pos.x - Pos X.
+   * @param {Number} pos.y - Pos Y.
+   * @param {Number} pos.z - Pos Z.
+   * @returns {Object}
    */
   getBlockData(pos) {
-    var x = pos.x % this.size.xL
-      , y = pos.y % this.size.yL
-      , z = pos.z % this.size.zL
+    var x = clamp(pos.x, 0, this.size.xL)
+      , y = clamp(pos.y, 0, this.size.yL)
+      , z = clamp(pos.z, 0, this.size.zL)
       , index = z + this.size.zL * (y + this.size.yL * x)
 
     return this.palette.blockEntity["comp>" + index]["comp>block_entity_data"];
   }
 
   /**
-   * Place a block.
-   * 
-   * Put given NBT data into block indices.
-   * @param {Object} pos 
-   * @param {Number} pos.x
-   * @param {Number} pos.y
-   * @param {Number} pos.z
-   * @param {Object} block 
+   * Get specified entity.
+   * @param {BigInt|Number} uniqueID - Entity ID.
+   * @returns {Object|null} The specified entity or null.
+   */
+  getEntity(uniqueID) {
+    for (var e of this.entities)
+      if (e["i64>UniqueID"] == BigInt(uniqueID))
+        return e;
+    return null
+  }
+
+  /**
+   * Place a block, and put given NBT data into block indices.
+   * @param {Object} pos - Position in the structure.
+   * @param {Number} pos.x - Pos X.
+   * @param {Number} pos.y - Pos Y.
+   * @param {Number} pos.z - Pos Z.
+   * @param {Object} block - Data of the block.
    * @returns {Boolean}
    */
   setBlock(pos, block) {
-    var x = pos.x % this.size.xL
-      , y = pos.y % this.size.yL
-      , z = pos.z % this.size.zL
+    var x = clamp(pos.x, 0, this.size.xL)
+      , y = clamp(pos.y, 0, this.size.yL)
+      , z = clamp(pos.z, 0, this.size.zL)
       , index = z + this.size.zL * (y + this.size.yL * x);
 
     for (var i = 0; i < this.palette.block.length; i++)
@@ -171,40 +189,116 @@ class MCStructure {
 
   /**
    * Set the block entity of a block.
-   * 
-   * Put given NBT data into block entity data array.
-   * @param {Object} pos 
-   * @param {Number} pos.x
-   * @param {Number} pos.y
-   * @param {Number} pos.z
-   * @param {*} nbt 
+   * @param {Object} pos - Position in the structure.
+   * @param {Number} pos.x - Pos X.
+   * @param {Number} pos.y - Pos Y.
+   * @param {Number} pos.z - Pos Z.
+   * @param {Object} nbt - Block entity data.
    * @returns {Boolean}
    */
   setBlockData(pos, nbt) {
-    var x = pos.x % this.size.xL
-      , y = pos.y % this.size.yL
-      , z = pos.z % this.size.zL
-      , index = z + this.size.zL * (y + this.size.yL * x);
+    var x = clamp(pos.x, 0, this.size.xL)
+      , y = clamp(pos.y, 0, this.size.yL)
+      , z = clamp(pos.z, 0, this.size.zL)
+      , index = z + this.size.zL * (y + this.size.yL * x)
+      , be = NBT.create(true)
+      , bd;
 
-    this.palette.blockEntity["comp>" + index] = NBT.create(true);
-    this.palette.blockEntity["comp>" + index]["comp>block_entity_data"] = nbt;
-    nbt["i32>x"] = x - this.origin.x;
-    nbt["i32>y"] = y - this.origin.y;
-    nbt["i32>z"] = z - this.origin.z;
+    bd = be["comp>block_entity_data"] = NBT.assign(NBT.create(true), nbt);
 
+    bd["i32>x"] = x - this.origin.x;
+    bd["i32>y"] = y - this.origin.y;
+    bd["i32>z"] = z - this.origin.z;
+
+    this.palette.blockEntity["comp>" + index] = be;
     return true
   }
 
+  /**
+   * Fill specified area with given block.
+   * @param {Object} from - Position in the structure.
+   * @param {Number} from.x
+   * @param {Number} from.y
+   * @param {Number} from.z
+   * @param {Object} to - Position in the structure.
+   * @param {Number} to.x
+   * @param {Number} to.y
+   * @param {Number} to.z
+   * @param {Object} block - Data of the block.
+   * @returns {Boolean}
+   */
   fill(from, to, block) {
+    var pb = this.palette.block
+      , pos = [
+        clamp(from.x, 0, this.size.xL),
+        clamp(from.y, 0, this.size.yL),
+        clamp(from.z, 0, this.size.zL),
+        clamp(to.x, 0, this.size.xL),
+        clamp(to.y, 0, this.size.yL),
+        clamp(to.z, 0, this.size.zL)
+      ]
+      , bi, index;
 
-  }
+    for (var i = 0; i < 3; i++) {
+      pos[i] = Math.floor(pos[i]);
+      pos[i + 3] = Math.floor(pos[i + 3]);
+      if (pos[i] > pos[i + 3])
+        [pos[i], pos[i + 3]] = [pos[i + 3], pos[i]];
+    }
 
-  summon(pos, entity) {
+    for (var i = 0; i < pb.length; i++)
+      if (NBT.equal(pb[i], block)) {
+        bi = i;
+        break
+      } else if (i == pb.length - 1) {
+        bi = pb.length;
+        pb.push(block);
+      }
 
+    for (var xC = pos[0]; xC <= pos[3]; xC++)
+      for (var yC = pos[1]; yC <= pos[4]; yC++)
+        for (var zC = pos[2]; zC <= pos[5]; zC++) {
+          index = zC + this.size.zL * (yC + this.size.yL * xC);
+          this.blockIndices[this.operationOnLayer][index] = bi;
+        }
+    return true
   }
 
   /**
-   * Serialize MCStructure object to ArrayBuffer.
+   * Place an entity.
+   * @param {Object} entity - Entity data.
+   * @param {Object} pos - Position in the structure.
+   * @param {Number} pos.x - Pos X.
+   * @param {Number} pos.y - Pos Y.
+   * @param {Number} pos.z - Pos Z.
+   * @returns {BigInt} Entity ID.
+   */
+  summon(entity, pos) {
+    if (pos) {
+      var x = clamp(pos.x, 0, this.size.xL)
+        , y = clamp(pos.y, 0, this.size.yL)
+        , z = clamp(pos.z, 0, this.size.zL);
+      entity["list>Pos"] = ["f32", x, y, z];
+    }
+    entity["i64>UniqueID"] = this.uniqueID;
+    this.entities.push(entity);
+    return this.uniqueID++
+  }
+
+  /**
+   * Remove specified entity.
+   * @param {BigInt|Number} uniqueID - Entity ID.
+   * @returns {Object|null} The entity removed or null.
+   */
+  kill(uniqueID) {
+    for (var i = 0; i < this.entities.length; i++)
+      if (this.entities[i]["i64>UniqueID"] == BigInt(uniqueID))
+        return this.entities.splice(i, 1);
+    return null
+  }
+
+  /**
+   * Serialize MCStructure object to NBT.
    * @returns {ArrayBuffer}
    */
   serialze() {

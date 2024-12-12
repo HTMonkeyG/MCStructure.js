@@ -14,7 +14,7 @@ var r, s;
 console.log(r = MCS.deserialize(buf2arr(fs.readFileSync("./test/test.mcstructure"))))
 
 var b = PMR.createUniversalTag("block");
-b.name = "minecraft:air"
+b.name = "minecraft:air";
 
 console.log(s = r.palette.blockEntity[NBT.PROXIED_NBT])
 
