@@ -1,4 +1,4 @@
-# MCStructure.s v1.2.0 documentation
+# MCStructure.js v1.2.0 documentation
 
 <a name="MCS"></a>
 
