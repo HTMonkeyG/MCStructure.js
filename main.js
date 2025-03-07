@@ -301,7 +301,7 @@ class MCStructure {
    * Serialize MCStructure object to NBT.
    * @returns {ArrayBuffer}
    */
-  serialze() {
+  serialize() {
     var result = NBT.create()
       , stru = NBT.create();
 
