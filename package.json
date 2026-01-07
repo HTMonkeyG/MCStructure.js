@@ -1,8 +1,12 @@
 {
   "name": "mcstructure-js",
-  "version": "1.2.1",
+  "version": "1.2.2",
   "description": "A NodeJS package for .mcstructure read & write",
   "main": "main.js",
+  "files": [
+    "./main.js",
+    "./main.d.ts"
+  ],
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
