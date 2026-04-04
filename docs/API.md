@@ -7,6 +7,7 @@
     * [new MCStructure(xL, yL, zL)](#new_MCS_new)
     * _instance_
       * [mcs.getVolume()](#MCS+getVolume) ⇒ [``<Number>``](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#number_type)
+      * [mcs.getSize()](#MCS+getSize) ⇒ [``<Object>``](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object)
       * [mcs.getBlock(pos)](#MCS+getBlock) ⇒ [``<Object>``](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object)
       * [mcs.getBlockData(pos)](#MCS+getBlockData) ⇒ [``<Object>``](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object)
       * [mcs.getEntity(uniqueID)](#MCS+getEntity) ⇒ [``<Object>``](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object)
@@ -34,6 +35,18 @@ Create a mcstructure with given size.
 ## mcs.getVolume()
 
 * Returns: [``<Number>``](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#number_type)
+
+
+Get volume of of the structure.
+
+<a name="MCS+getSize"></a>
+
+## mcs.getSize()
+
+* Returns: [``<Object>``](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object)
+  * ``x`` [``<Number>``](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#number_type) X size.
+  * ``y`` [``<Number>``](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#number_type) Y size.
+  * ``z`` [``<Number>``](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#number_type) Z size.
 
 Get volume of of the structure.
 

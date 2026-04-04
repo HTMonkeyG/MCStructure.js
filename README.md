@@ -42,7 +42,7 @@ st.setBlockData({x: 2, y: 2, z: 2}, be);
 # API Document
 See [API.md](https://github.com/HTMonkeyG/MCStructure.js/blob/main/docs/API.md).
 
-# Relative Repositories
+# Related Repositories
 
 - [Project-Mirror-Registry](https://github.com/HTMonkeyG/Project-Mirror-Registry) - A NodeJS package produces template data of MCBE NBT.
 - [Narrator.js](https://github.com/HTMonkeyG/Narrator-js) - A NodeJS package provides API to operate MCBE archive data directly.

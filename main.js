@@ -70,9 +70,9 @@ class MCStructure {
 
   /**
    * Create a mcstructure with given size.
-   * @param {Number} xL - X side length.
-   * @param {Number} yL - Y side length.
-   * @param {Number} zL - Z side length.
+   * @param {number} xL - X side length.
+   * @param {number} yL - Y side length.
+   * @param {number} zL - Z side length.
    */
   constructor(xL, yL, zL) {
     if (xL < 0 || yL < 0 || zL < 0 || xL * yL * zL > 1073741824)
@@ -108,19 +108,31 @@ class MCStructure {
 
   /**
    * Get volume of of the structure.
-   * @returns {Number}
+   * @returns {number}
    */
   getVolume() {
     return this.size.xL * this.size.yL * this.size.zL
   }
 
   /**
+   * Get the size of of the structure.
+   * @returns {{x:number, y:number, z:number}}
+   */
+  getSize() {
+    return {
+      x: this.size.xL,
+      y: this.size.yL,
+      z: this.size.zL
+    };
+  }
+
+  /**
    * Get a block in the structure.
-   * @param {Object} pos - Position in the structure.
-   * @param {Number} pos.x - Pos X.
-   * @param {Number} pos.y - Pos Y.
-   * @param {Number} pos.z - Pos Z.
-   * @returns {Object}
+   * @param {object} pos - Position in the structure.
+   * @param {number} pos.x - Pos X.
+   * @param {number} pos.y - Pos Y.
+   * @param {number} pos.z - Pos Z.
+   * @returns {object}
    */
   getBlock(pos) {
     var x = clamp(pos.x, 0, this.size.xL)
@@ -134,11 +146,11 @@ class MCStructure {
 
   /**
    * Get block entity.
-   * @param {Object} pos - Position in the structure.
-   * @param {Number} pos.x - Pos X.
-   * @param {Number} pos.y - Pos Y.
-   * @param {Number} pos.z - Pos Z.
-   * @returns {Object}
+   * @param {object} pos - Position in the structure.
+   * @param {number} pos.x - Pos X.
+   * @param {number} pos.y - Pos Y.
+   * @param {number} pos.z - Pos Z.
+   * @returns {object}
    */
   getBlockData(pos) {
     var x = clamp(pos.x, 0, this.size.xL)
@@ -151,8 +163,8 @@ class MCStructure {
 
   /**
    * Get specified entity.
-   * @param {BigInt|Number} uniqueID - Entity ID.
-   * @returns {Object|null} The specified entity or null.
+   * @param {BigInt|number} uniqueID - Entity ID.
+   * @returns {object|null} The specified entity or null.
    */
   getEntity(uniqueID) {
     for (var e of this.entities)
@@ -163,12 +175,12 @@ class MCStructure {
 
   /**
    * Place a block, and put given NBT data into block indices.
-   * @param {Object} pos - Position in the structure.
-   * @param {Number} pos.x - Pos X.
-   * @param {Number} pos.y - Pos Y.
-   * @param {Number} pos.z - Pos Z.
-   * @param {Object} block - Data of the block.
-   * @returns {Boolean}
+   * @param {object} pos - Position in the structure.
+   * @param {number} pos.x - Pos X.
+   * @param {number} pos.y - Pos Y.
+   * @param {number} pos.z - Pos Z.
+   * @param {object} block - Data of the block.
+   * @returns {boolean}
    */
   setBlock(pos, block) {
     var x = clamp(pos.x, 0, this.size.xL)
@@ -189,12 +201,12 @@ class MCStructure {
 
   /**
    * Set the block entity of a block.
-   * @param {Object} pos - Position in the structure.
-   * @param {Number} pos.x - Pos X.
-   * @param {Number} pos.y - Pos Y.
-   * @param {Number} pos.z - Pos Z.
-   * @param {Object} nbt - Block entity data.
-   * @returns {Boolean}
+   * @param {object} pos - Position in the structure.
+   * @param {number} pos.x - Pos X.
+   * @param {number} pos.y - Pos Y.
+   * @param {number} pos.z - Pos Z.
+   * @param {object} nbt - Block entity data.
+   * @returns {boolean}
    */
   setBlockData(pos, nbt) {
     var x = clamp(pos.x, 0, this.size.xL)
@@ -216,16 +228,16 @@ class MCStructure {
 
   /**
    * Fill specified area with given block.
-   * @param {Object} from - Position in the structure.
-   * @param {Number} from.x
-   * @param {Number} from.y
-   * @param {Number} from.z
-   * @param {Object} to - Position in the structure.
-   * @param {Number} to.x
-   * @param {Number} to.y
-   * @param {Number} to.z
-   * @param {Object} block - Data of the block.
-   * @returns {Boolean}
+   * @param {object} from - Position in the structure.
+   * @param {number} from.x
+   * @param {number} from.y
+   * @param {number} from.z
+   * @param {object} to - Position in the structure.
+   * @param {number} to.x
+   * @param {number} to.y
+   * @param {number} to.z
+   * @param {object} block - Data of the block.
+   * @returns {boolean}
    */
   fill(from, to, block) {
     var pb = this.palette.block
@@ -266,11 +278,11 @@ class MCStructure {
 
   /**
    * Place an entity.
-   * @param {Object} entity - Entity data.
-   * @param {Object} pos - Position in the structure.
-   * @param {Number} pos.x - Pos X.
-   * @param {Number} pos.y - Pos Y.
-   * @param {Number} pos.z - Pos Z.
+   * @param {object} entity - Entity data.
+   * @param {object} pos - Position in the structure.
+   * @param {number} pos.x - Pos X.
+   * @param {number} pos.y - Pos Y.
+   * @param {number} pos.z - Pos Z.
    * @returns {BigInt} Entity ID.
    */
   summon(entity, pos) {
@@ -287,8 +299,8 @@ class MCStructure {
 
   /**
    * Remove specified entity.
-   * @param {BigInt|Number} uniqueID - Entity ID.
-   * @returns {Object|null} The entity removed or null.
+   * @param {BigInt|number} uniqueID - Entity ID.
+   * @returns {object|null} The entity removed or null.
    */
   kill(uniqueID) {
     for (var i = 0; i < this.entities.length; i++)

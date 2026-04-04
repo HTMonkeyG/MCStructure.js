@@ -34,6 +34,13 @@ declare class MCStructure {
   getVolume(): number;
 
   /**
+   * Get the size of of the structure.
+   * 
+   * @returns 
+   */
+  getSize(): { x: number, y: number, z: number };
+
+  /**
    * Get a block in the structure.
    * 
    * @param pos - Position in the structure.
