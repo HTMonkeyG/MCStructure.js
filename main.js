@@ -11,24 +11,24 @@ class MCStructure {
    * @returns {MCStructure}
    */
   static deserialize(buf) {
-    var snbt = NBT.Reader(buf, { littleEndian: true, asProxy: true })["comp>"]
-      , stru = snbt["comp>structure"]
+    var snbt = NBT.Reader(buf, { littleEndian: true, asProxy: true })["obj>"]
+      , stru = snbt["obj>structure"]
       , result = new MCStructure(
-        snbt["list>size"][1],
-        snbt["list>size"][2],
-        snbt["list>size"][3]
+        snbt["lst>size"][1],
+        snbt["lst>size"][2],
+        snbt["lst>size"][3]
       );
     result.origin = {
-      x: snbt["list>structure_world_origin"][1],
-      y: snbt["list>structure_world_origin"][2],
-      z: snbt["list>structure_world_origin"][3]
+      x: snbt["lst>structure_world_origin"][1],
+      y: snbt["lst>structure_world_origin"][2],
+      z: snbt["lst>structure_world_origin"][3]
     };
     result.version = snbt["i32>format_version"];
-    result.blockIndices.extron = Int32Array.from(stru["list>block_indices"][1].slice(1));
-    result.blockIndices.intron = Int32Array.from(stru["list>block_indices"][2].slice(1));
-    result.entities = stru["list>entities"].slice(1);
-    result.palette.block = stru["comp>palette"]["comp>default"]["list>block_palette"].slice(1);
-    result.palette.blockEntity = stru["comp>palette"]["comp>default"]["comp>block_position_data"];
+    result.blockIndices.extron = Int32Array.from(stru["lst>block_indices"][1].slice(1));
+    result.blockIndices.intron = Int32Array.from(stru["lst>block_indices"][2].slice(1));
+    result.entities = stru["lst>entities"].slice(1);
+    result.palette.block = stru["obj>palette"]["obj>default"]["lst>block_palette"].slice(1);
+    result.palette.blockEntity = stru["obj>palette"]["obj>default"]["obj>block_position_data"];
 
     return result
   }
@@ -158,7 +158,7 @@ class MCStructure {
       , z = clamp(pos.z, 0, this.size.zL)
       , index = z + this.size.zL * (y + this.size.yL * x)
 
-    return this.palette.blockEntity["comp>" + index]["comp>block_entity_data"];
+    return this.palette.blockEntity["obj>" + index]["obj>block_entity_data"];
   }
 
   /**
@@ -216,13 +216,13 @@ class MCStructure {
       , be = NBT.create(true)
       , bd;
 
-    bd = be["comp>block_entity_data"] = NBT.assign(NBT.create(true), nbt);
+    bd = be["obj>block_entity_data"] = NBT.assign(NBT.create(true), nbt);
 
     bd["i32>x"] = x - this.origin.x;
     bd["i32>y"] = y - this.origin.y;
     bd["i32>z"] = z - this.origin.z;
 
-    this.palette.blockEntity["comp>" + index] = be;
+    this.palette.blockEntity["obj>" + index] = be;
     return true
   }
 
@@ -290,7 +290,7 @@ class MCStructure {
       var x = clamp(pos.x, 0, this.size.xL)
         , y = clamp(pos.y, 0, this.size.yL)
         , z = clamp(pos.z, 0, this.size.zL);
-      entity["list>Pos"] = ["f32", x, y, z];
+      entity["lst>Pos"] = ["f32", x, y, z];
     }
     entity["i64>UniqueID"] = this.uniqueID;
     this.entities.push(entity);
@@ -317,23 +317,23 @@ class MCStructure {
     var result = NBT.create()
       , stru = NBT.create();
 
-    result["list>size"] = ["i32", this.size.xL, this.size.yL, this.size.zL];
-    result["list>structure_world_origin"] = ["i32", this.origin.x, this.origin.y, this.origin.z];
+    result["lst>size"] = ["i32", this.size.xL, this.size.yL, this.size.zL];
+    result["lst>structure_world_origin"] = ["i32", this.origin.x, this.origin.y, this.origin.z];
     result["i32>format_version"] = this.version;
-    result["comp>structure"] = stru;
-    stru["list>block_indices"] = [
+    result["obj>structure"] = stru;
+    stru["lst>block_indices"] = [
       "list",
       this.blockIndices.extron,
       this.blockIndices.intron
     ];
-    stru["list>entities"] = ["comp", ...this.entities];
-    stru["comp>palette"] = NBT.create();
-    stru["comp>palette"]["comp>default"] = NBT.create();
-    stru["comp>palette"]["comp>default"]["list>block_palette"] = [
+    stru["lst>entities"] = ["comp", ...this.entities];
+    stru["obj>palette"] = NBT.create();
+    stru["obj>palette"]["obj>default"] = NBT.create();
+    stru["obj>palette"]["obj>default"]["lst>block_palette"] = [
       "comp",
       ...this.palette.block
     ];
-    stru["comp>palette"]["comp>default"]["comp>block_position_data"] = this.palette.blockEntity;
+    stru["obj>palette"]["obj>default"]["obj>block_position_data"] = this.palette.blockEntity;
 
     return NBT.Writer(result, { littleEndian: true, allowBigInt: true, allowTypedArray: true })
   }

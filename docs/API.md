@@ -182,8 +182,8 @@ var mcs = new MCS(1, 1, 1);
 
 var entity = PMR.createUniversalTag("entity");
 entity["str>identifier"] = "minecraft:creeper";
-entity["list>definitions"].push("+minecraft:creeper");
-entity["list>definitions"].push("+");
+entity["lst>definitions"].push("+minecraft:creeper");
+entity["lst>definitions"].push("+");
 
 mcs.summon(
   entity,
@@ -222,8 +222,8 @@ var mcs = new MCS(1, 1, 1);
 
 var entity = PMR.createUniversalTag("entity");
 entity["str>identifier"] = "minecraft:creeper";
-entity["list>definitions"].push("+minecraft:creeper");
-entity["list>definitions"].push("+");
+entity["lst>definitions"].push("+minecraft:creeper");
+entity["lst>definitions"].push("+");
 
 mcs.summon(
   entity,
