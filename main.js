@@ -322,15 +322,15 @@ class MCStructure {
     result["i32>format_version"] = this.version;
     result["obj>structure"] = stru;
     stru["lst>block_indices"] = [
-      "list",
+      "lst",
       this.blockIndices.extron,
       this.blockIndices.intron
     ];
-    stru["lst>entities"] = ["comp", ...this.entities];
+    stru["lst>entities"] = ["obj", ...this.entities];
     stru["obj>palette"] = NBT.create();
     stru["obj>palette"]["obj>default"] = NBT.create();
     stru["obj>palette"]["obj>default"]["lst>block_palette"] = [
-      "comp",
+      "obj",
       ...this.palette.block
     ];
     stru["obj>palette"]["obj>default"]["obj>block_position_data"] = this.palette.blockEntity;

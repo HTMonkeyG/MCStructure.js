@@ -1,6 +1,6 @@
 {
   "name": "mcstructure-js",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "A NodeJS package for .mcstructure read & write",
   "main": "main.js",
   "files": [
